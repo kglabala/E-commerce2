@@ -1,0 +1,25 @@
+@(basket: Form[CreateBasketForm], users: Seq[User], products: Seq[Product])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map {key => @request.messages(key)}
+
+@main("Welcome to Ebiznes") {
+	@form(routes.BasketController.addBasket()) {
+		<select name="user" id="user">
+		@for(user <- users) {
+			<option value="@user.id">@user.name @user.surname</option>
+		}
+		</select>
+		<select name="product" id="product">
+		@for(product <- products) {
+			<option value="@product.id">@product.name @product.description</option>
+		}
+		</select>
+		@inputText(basket("quantity"))
+		@inputText(basket("status"))
+		<div class="buttons">
+			<input type="submit" value="Add Basket"/>
+		</div>
+	}
+}

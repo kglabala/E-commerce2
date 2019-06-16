@@ -1,0 +1,25 @@
+@(order: Form[CreateOrderForm], users: Seq[User], baskets: Seq[Basket])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map {key => @request.messages(key)}
+
+@main("Welcome to Ebiznes") {
+	@form(routes.OrderController.addOrder()) {
+		<select name="user" id="user">
+		@for(user <- users) {
+			<option value="@user.id">@user.name @user.surname</option>
+		}
+		</select>
+		<select name="basket" id="basket">
+		@for(basket <- baskets) {
+			<option value="@basket.id">@basket.user @basket.product</option>
+		}
+		</select>
+		@inputText(order("address"))
+		@inputText(order("status"))
+		<div class="buttons">
+			<input type="submit" value="Add Order"/>
+		</div>
+	}
+}
